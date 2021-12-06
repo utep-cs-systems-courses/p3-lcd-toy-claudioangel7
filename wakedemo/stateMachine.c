@@ -113,7 +113,7 @@ void changeColor() //everytime there is a new diamond drawn
 
 void buzzer() //used to activate buzzer
 {
-  static char next  = 0;
+  static char next = 0;
 
   switch(next){ //will change to see which note is played
   case 1:
@@ -133,6 +133,66 @@ void buzzer() //used to activate buzzer
     break;
   
   }
+}
+
+
+void sadness_and_sorrow() {
+  static char next = 0;
+  switch(next) {
+
+  case 1:
+    buzzer_set_period(880); //La
+    next++;
+    break;
+  case 2:
+    buzzer_set_period(659); //Mi
+    next++;
+    break;
+  case 3:
+    buzzer_set_period(880); //La
+    next++;
+    break;
+  case 4:
+    buzzer_set_period(1046); //Do
+    next++;
+    break;
+  case 5:
+    buzzer_set_period(1174); //Re 
+    next++;
+    break;
+  case 6:
+    buzzer_set_period(880); //La
+    next++;
+    break;
+  case 7:
+    buzzer_set_period(1046); //Do
+    next++;
+    break;
+  case 8:
+    buzzer_set_period(987); //Si
+    next++;
+    break;
+  case 9:
+    buzzer_set_period(1046); //Do
+    next++;
+    break;
+  case 10:
+    buzzer_set_period(1174); //Re
+    next++;
+    break;
+  case 11:
+    buzzer_set_period(784); //Sol
+    next++;
+    break;
+  case 12:
+    buzzer_set_period(1318); //#Mi
+    next++;
+    break;
+  default:
+    next++;
+    break;
+  }
+
 }
 
 //void toggle_green_led()
@@ -246,7 +306,8 @@ void state_advance()  //changes states depending on what switch clicked.
 
   switch(switch_state_down){
       case 1:
-        fish(); // fish that changes color
+        fish();// fish that changes color
+        sadness_and_sorrow();
 	break;
       case 2:
 	
@@ -265,103 +326,4 @@ void state_advance()  //changes states depending on what switch clicked.
   }      
 }
 
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-  /*
-char alternate(){ // switch between both
-  char changed = 0;
-  static enum {R = 0, G = 1} color = G;
-  switch(color){
-  case R: changed = red_blink(); color = G; break;
-  case G: changed = toggle_green(); color = R; break;
-  }
-  led_changed = changed;
-  led_update();
-}
-*//*
-void dim25(){ //dim light to 25 %
-  static char dimState = 0;
-  switch(dimState){
-  case 0:
-    red_on = 0;
-    dimState = 1;
-    break;
-  case 1:
-    red_on = 0;
-    dimState = 2;
-    break;
-  case 2:
-    red_on = 0;
-    dimState = 3;
-  case 3:
-    red_on = 1;
-    dimState = 0;
-    break;
-  }
-  led_changed = 1;
-  led_update();
-}
-/*
-void dim50(){ // dim light 50 %
-  static char dimState = 0;
-  switch(dimState){
-  case 0:
-    red_on = 1;
-    dimState = 1;
-    break;
-  case 1:
-    red_on = 0;
-    dimState = 2;
-    break;
-  case 2:
-    red_on = 1;
-    dimState = 3;
-    break;
-  case 3:
-    red_on = 0;
-    dimState = 0;
-    break;
-  }
-  led_changed = 1;
-  led_update();
-}
-*/
-/*
-void dim75(){ //dim light 75%
-  static char dimState = 0;
-  switch(dimState){
-  case 0:
-    red_on = 1;
-    dimState = 1;
-    break;
-  case 1:
-    red_on = 1;
-    dimState = 2;
-    break;
-  case 2:
-    red_on = 1;
-    dimState = 3;
-    break;
-  case 3:
-    red_on = 0;
-    dimState = 0;
-    break;
-  }
-  led_changed = 1;
-  led_update();
-  }*/
 
