@@ -4,7 +4,6 @@
 #include "lcdutils.h"
 #include "lcddraw.h"
 
-
 /** Draw single pixel at x,row 
  *
  *  \param col Column to draw to
@@ -36,7 +35,54 @@ void fillRectangle(u_char colMin, u_char rowMin, u_char width, u_char height,
     lcd_writeColor(colorBGR);
   }
 }
+/* will draw figure of fish */
+void drawFish(u_char col, u_char row,  u_int colorBGR, u_char center)
+{
+  
+  u_char r;
+  u_char c; 
+ 
+  //tail for fish, two triangles combined
+  for(r = center; r > 0; r--){
+    for(c = center; c>=r; c--){
+      drawPixel(col + c, row+ r, colorBGR);// bottom tail
+      drawPixel(col + c, row-r+1, colorBGR); // top tail
+    }
+  }
 
+  //body of the fish
+  fillRectangle(col-(center*2-center/2),row-center/2,center*2, center, colorBGR);
+  //eye of the fish
+  fillRectangle(col-center-center/4, row-center/4, center/4, center/4, COLOR_BLACK);
+  //fin of fish
+  for(r = center/2; r > 0; r--){
+    for(c = center/2; c>=r; c--){
+      drawPixel(col/2 + c, row+center/4+ r, COLOR_RED);// bottom tail
+    }
+  } 
+}
+
+void drawDiamond(u_char col, u_char row, u_char center, u_int colorBGR)
+{
+  u_char r;
+  u_char c;
+
+  //top part of the diamond
+  for(r = 0; r< center; r++){
+    for(c = 0; c < r; c++){
+      drawPixel(center+col + c, row+r, colorBGR);
+      drawPixel(center+col - c,row+r, colorBGR);
+    }  
+  }
+
+  for(c = 0; c < center; c++){
+    for(r = center; r < center*2 -c; r++){
+      drawPixel(center+col + c,row+r, colorBGR);
+      drawPixel(center+col - c,row+r, colorBGR);
+    }
+  }
+  
+}
 /** Clear screen (fill with color)
  *  
  *  \param colorBGR The color to fill screen
@@ -56,7 +102,7 @@ void drawChar5x7(u_char rcol, u_char rrow, char c,
 {
   u_char col = 0;
   u_char row = 0;
-  u_char bit = 0x01;
+  u_char bit = 0x01; 
   u_char oc = c - 0x20;
 
   lcd_setArea(rcol, rrow, rcol + 4, rrow + 7); /* relative to requested col/row */
@@ -71,6 +117,28 @@ void drawChar5x7(u_char rcol, u_char rrow, char c,
     row++;
   }
 }
+
+void drawChar11x16(u_char rcol, u_char rrow, char c, // what will draw each letter
+	      u_int fgColorBGR, u_int bgColorBGR)
+{
+  u_char col = 0;
+  u_char row = 0;
+  u_int bit = 0x0001; //shortens the character vertically, the bigger the number 
+  u_char oc = c - 0x20;
+
+  lcd_setArea(rcol, rrow, rcol + 10, rrow + 16);
+  while(row < 17){
+    while( col < 11){
+      u_int colorBGR = (font_11x16[oc][col] &bit) ? fgColorBGR : bgColorBGR;
+      lcd_writeColor(colorBGR);
+      col++;
+    }
+    col = 0;
+    bit <<=1;
+    row++;
+  }
+}
+
 
 /** Draw string at col,row
  *  Type:
@@ -91,6 +159,16 @@ void drawString5x7(u_char col, u_char row, char *string,
   while (*string) {
     drawChar5x7(cols, row, *string++, fgColorBGR, bgColorBGR);
     cols += 6;
+  }
+}
+
+void drawString11x16(u_char col, u_char row, char *string, // made from method drawString5x7
+		u_int fgColorBGR, u_int bgColorBGR)
+{
+  u_char cols = col;
+  while (*string) {
+    drawChar11x16(cols, row, *string++, fgColorBGR, bgColorBGR);
+    cols += 12;
   }
 }
 
